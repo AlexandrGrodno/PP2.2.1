@@ -28,9 +28,12 @@ public class UserDaoImp implements UserDao {
    }
 
    @Override
-   public List<User> getUser(int id) {
-      TypedQuery <User> query1=sessionFactory.getCurrentSession().createQuery("from User u inner join fetch u.car c with  c.series  = 2");
+   public List<User> getUserFromModelAndSeries(String model,int id) {
+      TypedQuery <User> query=sessionFactory
+              .getCurrentSession()
+              .createQuery("from User u where   u.car.series  = : series and u.car.model = : model");
 
-      return query1.getResultList();
+      query.setParameter("series",id).setParameter("model",model);
+      return query.getResultList();
    }
 }
